@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>11.18 带妈妈逛深圳 · 行程卡 + 路线图</title>
+<style>
+:root{
+  --ink:#111;
+  --sub:#444;
+  --dim:#888;
+  --line:#e5e5e5;
+  --bg:#fff;
+  --accent:#0a7d5c;
+  --accent-bg:#f3faf7;
+  --amber-bg:#fffaf0;
+  --amber-ink:#8a5a00;
+  --red-ink:#b3352c;
+  --orange:#d97706;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+  font-size:13.5px;line-height:1.55;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom));
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+header{padding:calc(16px + env(safe-area-inset-top)) 0 13px;border-bottom:2px solid var(--ink)}
+.date-chip{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:2px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;display:inline-block;padding:1px 8px;margin-bottom:7px}
+h1{font-size:19px;font-weight:800;letter-spacing:.3px}
+h1 small{display:block;font-size:11.5px;color:var(--dim);font-weight:400;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-size:11px;color:var(--sub);background:#f7f7f7;border:1px solid var(--line);border-radius:99px;padding:2px 9px}
+.chip b{color:var(--ink)}
+section{margin-top:18px}
+.sec-head{display:flex;align-items:baseline;gap:7px;margin-bottom:5px}
+.sec-head .no{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--accent);font-weight:700}
+.sec-head h2{font-size:15.5px;font-weight:800}
+.sec-head .sub{font-size:10.5px;color:var(--dim);margin-left:auto;font-family:ui-monospace,Menlo,monospace}
+.sec-note{font-size:11.5px;color:var(--dim);margin-bottom:9px}
+.wx{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.wx>div{border:1px solid var(--line);border-radius:10px;padding:7px 10px 8px;background:#fff}
+.wx span{font-size:10.5px;color:var(--dim);letter-spacing:.3px}
+.wx b{display:block;font-size:14px;color:var(--ink);margin:1px 0 3px;letter-spacing:-.2px}
+.wx i{font-style:normal;font-size:10.5px;color:var(--sub);line-height:1.45;display:block}
+.wx i b{display:inline;font-size:10.5px;color:var(--accent)}
+.wx i b{display:inline;font-size:10.5px;color:var(--accent)}
+.note{
+  background:var(--accent-bg);border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;padding:8px 11px;font-size:12.5px;margin-bottom:8px;color:var(--ink);
+}
+.note.amb{background:var(--amber-bg);border-left-color:#d99a00;color:var(--amber-ink)}
+.note b,.card p b,.route-table .a b,ul.tips li b,.key-point b{font-weight:800;color:var(--ink)}
+.note.amb b{color:var(--amber-ink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid2 .card{margin-bottom:0}
+.card{border:1px solid var(--line);border-radius:9px;padding:10px 11px 8px;margin-bottom:8px;background:#fff}
+.card h3{font-size:13.5px;font-weight:800;margin-bottom:4px}
+.card h3 .pr{font-size:10px;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px;margin-left:5px;vertical-align:2px;font-weight:600}
+.card p{font-size:12px;color:var(--sub)}
+.meta{font-size:10.5px;color:var(--dim);margin-top:5px;font-family:ui-monospace,Menlo,monospace}
+.route-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.route-table th{
+  text-align:left;font-size:11px;color:var(--dim);font-weight:600;
+  border-bottom:2px solid var(--ink);padding:0 5px 4px;
+}
+.route-table td{padding:6px 5px;border-bottom:1px solid var(--line);vertical-align:top}
+.route-table tr:last-child td{border-bottom:none}
+.route-table .t{font-family:ui-monospace,Menlo,monospace;font-weight:700;white-space:nowrap;color:var(--ink)}
+.route-table .d{color:var(--accent);font-family:ui-monospace,Menlo,monospace;font-size:11px}
+.route-table .a{color:var(--sub)}
+.key-point{
+  background:var(--accent-bg);border:1px solid #cfe8de;border-radius:7px;
+  padding:7px 9px;margin-top:7px;font-size:11.5px;color:var(--ink);
+}
+.key-point b{color:var(--accent)}
+ul.tips{list-style:none}
+ul.tips li{font-size:12px;color:var(--sub);padding:4px 0 4px 15px;position:relative}
+ul.tips li::before{content:"▪";position:absolute;left:1px;color:var(--accent)}
+table.bud{width:100%;border-collapse:collapse;font-size:12.5px}
+table.bud td{padding:6px 2px;border-bottom:1px solid var(--line);color:var(--sub)}
+table.bud td:last-child{text-align:right;font-family:ui-monospace,Menlo,monospace;color:var(--ink)}
+table.bud tr.total td{border-bottom:none;padding-top:9px;font-weight:800;color:var(--ink)}
+table.bud tr.total td:last-child{color:var(--accent)}
+.check-list{list-style:none;column-count:2;column-gap:16px}
+.check-list li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px;break-inside:avoid}
+.check-list li:last-child{border-bottom:none}
+.check-list input{appearance:none;-webkit-appearance:none;width:17px;height:17px;flex-shrink:0;border:1.5px solid #bbb;border-radius:5px;cursor:pointer;position:relative}
+.check-list input:checked{background:var(--accent);border-color:var(--accent)}
+.check-list input:checked::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.check-list li.done label{color:var(--dim);text-decoration:line-through}
+.check-list label{flex:1;cursor:pointer}
+footer{margin-top:20px;padding-top:10px;border-top:1px solid var(--line);font-size:10.5px;color:var(--dim);line-height:1.7}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.lg{font-size:10.5px;color:var(--sub);border:1px solid var(--line);border-radius:99px;padding:2px 9px;display:inline-flex;align-items:center;gap:5px}
+.sw{width:14px;height:4px;border-radius:2px;display:inline-block;flex-shrink:0}
+#map{width:100%;height:52vh;min-height:380px;border:1px solid var(--line);border-radius:12px;background:#eef2f0;overflow:hidden}
+.mapwrap{position:relative}
+#ov{position:absolute;inset:0;overflow:hidden;border-radius:12px;pointer-events:none}
+#ov>*{position:absolute;left:-9999px;top:-9999px}
+#ov .chev{line-height:0;filter:drop-shadow(0 0 2px rgba(255,255,255,.9))}
+#ov .dot{display:flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28)}
+#ov .dot.o{background:var(--orange)}
+#ov .dot.pin{width:25px;height:25px;font-size:12px}
+.sl{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 0}
+.sl span{font-size:10.5px;color:var(--sub);border:1px solid var(--line);border-radius:99px;padding:2px 8px;background:#fff;white-space:nowrap}
+.sl b{color:var(--ink);font-weight:800}
+.sl i{font-style:normal;font-family:ui-monospace,Menlo,monospace;color:var(--accent);font-weight:700;margin-left:2px}
+.bub{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.95);border:1px solid var(--accent);border-radius:6px;padding:2px 7px 2px 4px;box-shadow:0 1px 4px rgba(0,0,0,.15);white-space:nowrap}
+.bub.up{transform:translate(-50%,-165%)}
+.bub.down{transform:translate(-50%,75%)}
+.bub.mid{transform:translate(-50%,-50%)}
+.bub .bno{width:17px;height:17px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bub .bno.o{background:var(--orange)}
+.bub .bno.r{background:#c0392b}
+.bub .btxt{font-size:11px;font-weight:700;color:var(--ink)}
+.bub .btime{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--accent);font-weight:700;margin-left:2px}
+.bub.o{border-color:var(--orange)}
+.bub.o .btime{color:var(--orange)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="date-chip">2026.11.18 WED · APEC DAY</div>
+  <h1>带妈妈逛深圳 · 行程卡 + 路线图<small>惠州碧桂园翡翠山出发 · 上午雅宝办公 · 下午 APEC 打卡 · 一天不走回头路</small></h1>
+  <div class="chips">
+    <span class="chip">天气：<b>多云间阴，短时阵雨</b>（午后转多云）</span>
+    <span class="chip">偏北风4级·阵风7-8级 · <b>19–25℃</b></span>
+    <span class="chip">日落 <b>17:39</b></span>
+    <span class="chip">地铁<b>五折</b>（11.16-20）</span>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head"><span class="no">00</span><h2>全天主轴</h2></div>
+  <div class="note"><b>06:35</b> 翡翠山出发 → <b>07:12</b> 266路 → <b>08:10</b> 沙田站换14号线 → <b>09:50前</b> 到星河WORLD F栋 → <b>10-12点</b> 办公/妈妈安排 → <b>12:00</b> 客家菜午餐 → <b>13:20</b> 出发香蜜湖 → <b>14:05-16:50</b> APEC主会场外围打卡 → <b>17:15-18:30</b> 深南天桥日落+亮灯 → <b>18:45</b> 车公庙返程</div>
+  <div class="wx">
+    <div><span>气温</span><b>19–25℃</b><i>白天最高25℃（午间偏热），<b>傍晚降到19℃左右</b>，夜间16-17℃</i></div>
+    <div><span>降水</span><b>短时阵雨·概率80%</b><i>多云间阴天，午后转多云；折叠伞随身，花海段无遮挡</i></div>
+    <div><span>风力</span><b>偏北风4级·阵风7-8级</b><i>沿海、高地、海区阵风最强；天桥上风更硬，帽子易被吹走</i></div>
+    <div><span>穿着</span><b>午热晚凉</b><i>湿度60-90%；午间薄长袖，日落17:39后加外套，妈妈备围巾</i></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">01</span><h2>上午 · 跨城通勤 + 办公</h2><span class="sub">06:35-12:00</span></div>
+  <table class="route-table">
+    <tr><th>时间</th><th>安排</th><th>说明</th></tr>
+    <tr><td class="t">06:35-06:50</td><td class="a"><b>翡翠山25栋</b>出发，至266路龙海二路沿线站台</td><td class="d">自带早餐赶早班车</td></tr>
+    <tr><td class="t">07:12前后</td><td class="a">乘 <b>266路</b> 往沙田地铁站方向</td><td class="d">5-10分钟一班·约1小时·2-3元</td></tr>
+    <tr><td class="t">08:10前后</td><td class="a">到 <b>沙田站</b> 换 <b>14号线</b>（岗厦北方向）</td><td class="d">快线·票价五折</td></tr>
+    <tr><td class="t">08:15-09:30</td><td class="a">14号线到 <b>岗厦北</b> → 换 <b>10号线</b>（双拥街方向）4站 → <b>雅宝站</b></td><td class="d">早高峰3-6分钟一班</td></tr>
+    <tr><td class="t">09:30-09:50</td><td class="a"><b>雅宝站C口</b>出，步行至 <b>星河WORLD三期F栋</b>（雅宝路1号）</td><td class="d">出站即园区</td></tr>
+    <tr><td class="t">10:00-12:00</td><td class="a"><b>你：F栋办公</b>；妈妈见第02节</td><td class="d">手机保持畅通</td></tr>
+  </table>
+  <div class="note amb"><b>硬性时间点：</b>明天是领导人会议首日、早高峰更挤，<b>266路最晚07:20前必须上车</b>，否则10点到不了雅宝。宁可早到40分钟在COCO Park吃早餐。</div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">02</span><h2>10-12点 · 妈妈的安排</h2><span class="sub">按天气体力组合</span></div>
+  <div class="sec-note">上午有雨风大首选室内，雨停后可加户外；均在雅宝站步行范围，随时能回F栋找你。</div>
+  <div class="grid2">
+    <div class="card">
+      <h3>A · COCO Park<span class="pr">主推</span></h3>
+      <p>与F栋同园区，<b>10:00开门</b>。超市时装餐饮影院按摩齐全，4楼<b>按摩店</b>歇脚。<b>C口直连商场</b>，全程室内不淋雨。</p>
+      <div class="meta">园区内3-5分钟 · 10:00-22:00</div>
+    </div>
+    <div class="card">
+      <h3>B · 雅宝公园+般若禅寺</h3>
+      <p>F栋楼下即公园缓步道，约<b>400米有般若禅寺</b>（评分4.8）——烧香祈福，妈妈最有亲切感。雨停后走最佳。</p>
+      <div class="meta">出门即到 · 禅寺06:00-19:30</div>
+    </div>
+    <div class="card">
+      <h3>C · 银湖山绿道（体力好）</h3>
+      <p>约3公里到<b>银湖山郊野公园</b>（评分4.6），绿道5号线散步空气好。<b>山上无水无厕所</b>，先在COCO Park备好。只走平缓段1小时内。</p>
+      <div class="meta">约3公里·公交/打车·05:00-22:00</div>
+    </div>
+    <div class="card">
+      <h3>D · 甘坑古镇（走远点）</h3>
+      <p>10号线<b>4站到甘坑站B口</b>步行15分钟。客家古村落免费，小吃街+绘本馆。<b>需11:45前返程</b>回雅宝，午餐不迟到。</p>
+      <div class="meta">4站+步行1.3km · 全天开放</div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:8px"><b>组合建议：</b>有雨 → <b>A+B</b>；雨早停+体力好 → <b>A+C</b> 或 <b>A+D</b>。妈妈单独行动只走A+B；D建议陪同。</div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">03</span><h2>12:00 · 午餐 · 特色菜</h2><span class="sub">大众点评参考</span></div>
+  <div class="grid2">
+    <div class="card">
+      <h3>客家园（4楼）<span class="pr">首推</span></h3>
+      <p><b>客家窑鸡</b>现点现窑，盐焗鸡、酿三宝、酿豆腐招牌，清淡适合长辈。<b>你从F栋走5分钟</b>，12点准时开饭。</p>
+      <div class="meta">人均60-80元 · COCO Park 4楼</div>
+    </div>
+    <div class="card">
+      <h3>松鹤楼面馆</h3>
+      <p>苏式汤面、枫镇大肉面，汤头清鲜。上菜快，时间盒卡得住。</p>
+      <div class="meta">人均50-70元 · 场内</div>
+    </div>
+    <div class="card">
+      <h3>巴蜀风</h3>
+      <p>川式家常菜，妈妈能吃点辣的话毛血旺、回锅肉地道，可叮嘱减辣。</p>
+      <div class="meta">人均70-90元 · 场内</div>
+    </div>
+    <div class="card">
+      <h3>探鱼</h3>
+      <p>烤鱼现烤约25分钟，<b>11:50提前扫码下单</b>，12:10落座即开吃。</p>
+      <div class="meta">人均80-100元 · 场内</div>
+    </div>
+  </div>
+  <div class="note amb" style="margin-top:8px"><b>午餐纪律：</b>12:00-13:15吃完，<b>13:15结账、13:20出发</b>。排队以现场点评为准。</div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">04</span><h2>下午 · APEC 打卡</h2><span class="sub">13:20-18:45</span></div>
+  <div class="sec-note">地图上<b>圆点编号＝下表编号</b>，先后顺序一致。绿线＝步行段，橙虚线＝红荔西路西行段（你手绘橙箭头那条），灰虚线＝1号线一站。</div>
+  <div class="legend">
+    <span class="lg"><span class="sw" style="background:#0a7d5c"></span>步行段</span>
+    <span class="lg"><span class="sw" style="background:#d97706"></span>红荔西路西行</span>
+    <span class="lg"><span class="sw" style="background:#64748b"></span>1号线1站（竹子林→车公庙）</span>
+  </div>
+  <div class="mapwrap">
+    <div id="map"></div>
+    <div id="ov" aria-hidden="true"></div>
+  </div>
+  <div class="sl" id="sleg"></div>
+  <div class="note" style="margin-top:8px"><b>动线：</b>香梅北D口 → <b>侨香路</b>西行 → <b>香蜜湖路辅路</b>南下 → 交流中心（5号门进·6号门出）→ <b>红荔西路西行</b>（酒店花海→绿雕→四季花谷→农林站C口）→ <b>农林路</b>南下 → 深南大道天桥。<b>16:00起</b>周边9条道路限车<b>不限行人</b>，步行与天桥机位不受影响。</div>
+  <table class="route-table">
+    <tr><th>时间</th><th>安排</th><th>说明</th></tr>
+    <tr><td class="t">13:20</td><td class="a">COCO Park → <b>雅宝站C口</b>进站</td><td class="d">午后人少从容</td></tr>
+    <tr><td class="t">13:26-14:05</td><td class="a"><b>10号线</b>（福田口岸方向）→ <b>岗厦北</b> → 换 <b>2号线</b>（赤湾方向）→ <b>香梅北站D口</b></td><td class="d">约40分钟·换乘1次·五折</td></tr>
+    <tr><td class="t">14:05-14:10</td><td class="a"><b>香梅北站D口</b>出站，沿侨香路西行约200米</td><td class="d">D口正对特发小区</td></tr>
+    <tr><td class="t">14:10-14:25</td><td class="a">① <b>特发小区天桥</b>：俯瞰侨香路两侧花海</td><td class="d">停15分钟</td></tr>
+    <tr><td class="t">14:25-14:40</td><td class="a">② <b>侨香路花海</b>：西行右手边更密更出片</td><td class="d">人少好拍</td></tr>
+    <tr><td class="t">14:40-15:00</td><td class="a">沿<b>侨香路</b>西行至香蜜湖路口，右转上<b>香蜜湖路辅路</b>南行（约1.1公里）</td><td class="d">全线会旗最密一段</td></tr>
+    <tr><td class="t">15:00-15:20</td><td class="a">③ <b>深圳行政学院人行天桥</b>（香蜜湖路3008号）：五洲酒店+大道同框</td><td class="d">停20分钟</td></tr>
+    <tr><td class="t">15:20-15:25</td><td class="a">辅路南行约200米 → 交流中心<b>5号门（北门）</b></td><td class="d">安检口按指引走</td></tr>
+    <tr><td class="t">15:25-15:55</td><td class="a">④ <b>深圳国际交流中心</b>（主会场·红荔西路8008号）：南广场巨型花海+彩旗+央视转播车，只拍外围</td><td class="d">核心机位·人流最密牵好妈妈</td></tr>
+    <tr><td class="t">15:55-16:15</td><td class="a">⑤ <b>五洲香蜜湖酒店前</b>（香蜜湖路3006号）：玫紫花海+「APEC CHINA 2026」立牌；<b>「飞鸟」花坛</b>在红荔西路中央隔离带，配波浪型酒店外观</td><td class="d">从6号门回身西行250米</td></tr>
+    <tr><td class="t">16:15-16:25</td><td class="a">☆ <b>《共荣生境》绿雕</b>（香蜜湖路×红荔路交会处）：21根立柱对应21个经济体，黑脸琵鹭、豹猫、和平鸽藏花境</td><td class="d">站侧前方竖拍立柱</td></tr>
+    <tr><td class="t">16:25-16:50</td><td class="a">⑥ <b>香蜜湖四季花谷</b>（香蜜公园东南角）：紫红蝴蝶雕塑，<b>二楼平台</b>拍花海+酒店同框；场内咖啡热饮歇脚</td><td class="d">室内避风·有洗手间</td></tr>
+    <tr><td class="t">16:50-17:05</td><td class="a">沿<b>红荔西路西行</b>约780米 → <b>农林站C口</b></td><td class="d">转折点·7号线1站即车公庙，随时机动撤离</td></tr>
+    <tr><td class="t">17:05-17:15</td><td class="a"><b>农林路</b>南下约730米 → 深南大道</td><td class="d">路口西南角上天桥</td></tr>
+    <tr><td class="t">17:15-18:30</td><td class="a">⑦ <b>深南大道天桥</b>（导航「深航大厦公交站①」）：<b>17:39日落</b>+亮灯双场景；桥上设<b>官方认证蓝框打卡点</b>，「APEC CHINA 2026」巨型花坛视野开阔</td><td class="d">最佳机位·拍完即下</td></tr>
+    <tr><td class="t">18:30-18:45</td><td class="a">下桥460米 → <b>竹子林站A口</b> → <b>1号线1站</b> → <b>车公庙</b>换11号线</td><td class="d">不走1公里省腿</td></tr>
+  </table>
+  <div class="key-point"><b>为什么14:05到、17:15上天桥：</b>雨午后停正好接住窗口；全程<b>单向向西</b>（侨香路→香蜜湖路辅路→红荔西路西行），仅交流中心6号门回身到酒店前折返约250米，其余零回头；<b>16:00起</b>香蜜湖路、侨香路、红荔西路、香梅路、深南大道等9条路限车（<b>不限行人</b>）；日落17:39，深南天桥一次拍齐日落+亮灯；18:30准时下桥，此时约19℃、阵风7-8级。</div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">05</span><h2>返程 · 回惠州翡翠山</h2><span class="sub">18:45-21:00</span></div>
+  <table class="route-table">
+    <tr><th>时间</th><th>安排</th><th>说明</th></tr>
+    <tr><td class="t">18:45</td><td class="a">车公庙 → <b>11号线</b>1站 → <b>岗厦北</b> → 换 <b>14号线</b>（沙田方向）</td><td class="d">五折延续至20日</td></tr>
+    <tr><td class="t">19:40前后</td><td class="a">到 <b>沙田站</b> 换 <b>266路</b></td><td class="d">末班23:00·充裕</td></tr>
+    <tr><td class="t">20:40前后</td><td class="a">回到 <b>碧桂园翡翠山</b>，全天结束</td><td class="d">跨城约1.5-2小时</td></tr>
+  </table>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">06</span><h2>装备清单</h2><span class="sub" id="cnt">0 / 9</span></div>
+  <div class="card">
+    <ul class="check-list" id="clist">
+      <li><input type="checkbox" id="c1"><label for="c1">防风薄外套（傍晚19℃·阵风大）</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">折叠伞（雨可能拖到午后）</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">舒适平底防滑鞋（全天约5公里）</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4">保温杯热水+零食</label></li>
+      <li><input type="checkbox" id="c5"><label for="c5">充电宝（跨城+拍照）</label></li>
+      <li><input type="checkbox" id="c6"><label for="c6">身份证（跨市备查）</label></li>
+      <li><input type="checkbox" id="c7"><label for="c7">乘车码提前开好（266上下车都刷）</label></li>
+      <li><input type="checkbox" id="c8"><label for="c8">纸巾湿巾</label></li>
+      <li><input type="checkbox" id="c9"><label for="c9">亮色丝巾（花海拍照）</label></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">07</span><h2>预算 · 2人</h2></div>
+  <div class="card">
+    <table class="bud">
+      <tr><td>266路公交×2往返</td><td>¥8-12</td></tr>
+      <tr><td>地铁五折×2</td><td>¥20-30</td></tr>
+      <tr><td>午餐特色菜</td><td>¥120-180</td></tr>
+      <tr><td>咖啡+按摩（如选）</td><td>¥40-150</td></tr>
+      <tr><td>晚餐（归途/回惠州）</td><td>¥80-150</td></tr>
+      <tr class="total"><td>合计</td><td>≈¥270-520</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="no">08</span><h2>避坑与提醒</h2></div>
+  <div class="card">
+    <ul class="tips">
+      <li><b>明天是领导人会议首日</b>（19日还有中俄美元首会晤），安保最严：核心区只步行、只坐地铁，别打车进香蜜湖片区。</li>
+      <li><b>今天天桥已有两场演练</b>（铁骑护卫队+花海同框），明天遇车队/演练概率高：<b>让行别追拍</b>，站在天桥原位拍反而更震撼。</li>
+      <li><b>香蜜站B口/车公庙J2口</b>可能短时管控；本次全程走<b>香梅北D口、农林站C口、竹子林A口</b>，按现场指引即可。</li>
+      <li>香蜜湖公园、交流中心主会场<b>不对外开放</b>，只拍外围。</li>
+      <li><b>⑤酒店前花海、⑥四季花谷、⑦深南天桥</b>是全天人流顶点，看好随身物品，牵好妈妈。</li>
+      <li>266路<b>上下车都刷卡</b>，漏刷按全程扣费；背包放胸前。</li>
+      <li><b>全市禁飞无人机</b>（11.11-21），别带也别放。</li>
+      <li>冷风天妈妈保暖优先，天桥上别久站。</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  信息来源：深圳市公安局交通管控通告、市交通运输局地铁通告、市气象台预报、大亚湾266路运营信息、腾讯地图/大众点评POI（2026.11.17检索）。地图路线为步行示意，各打卡点坐标取自腾讯地图 POI 检索（2026.11.17），与实际路网对齐；时间按公交常态估算，出行以实时导航与官方公告为准。<br>
+  <span style="font-family:ui-monospace,Menlo,monospace;color:var(--accent)">APEC CHINA 2026 · SHENZHEN · WITH MOM</span>
+</footer>
+
+</div>
+
+<script>
+window._TMapSecurityConfig = {
+  serviceHost: 'http://127.0.0.1:__WB_HTTP_PORT__/_TMapService/_wbt/__WB_TMAP_SECRET__',
+};
+</script>
+<script src="https://map.qq.com/api/gljs?v=1.exp&libraries=service"></script>
+<script>
+(function(){
+  var KEY="apec1118-v3-checklist";
+  var boxes=[].slice.call(document.querySelectorAll("#clist input"));
+  function refresh(){
+    var done=0;
+    boxes.forEach(function(b){
+      b.parentNode.classList.toggle("done",b.checked);
+      if(b.checked)done++;
+    });
+    var cnt=document.getElementById("cnt");
+    if(cnt)cnt.textContent=done+" / "+boxes.length;
+    try{localStorage.setItem(KEY,boxes.map(function(b){return b.checked?"1":"0"}).join(""))}catch(e){}
+  }
+  try{
+    var saved=localStorage.getItem(KEY);
+    if(saved){boxes.forEach(function(b,i){b.checked=saved[i]==="1"})}
+  }catch(e){}
+  boxes.forEach(function(b){b.addEventListener("change",refresh)});
+  refresh();
+})();
+
+(function(){
+  var P=function(lat,lng){return new TMap.LatLng(lat,lng)};
+
+  var COORDS={
+    start:{lat:22.55380,lng:114.03194},
+    a1:{lat:22.55405,lng:114.03060},
+    s1:{lat:22.55412,lng:114.03030},
+    s2:{lat:22.55410,lng:114.02880},
+    c1:{lat:22.55400,lng:114.02720},
+    w2:{lat:22.54900,lng:114.02720},
+    s3:{lat:22.54588,lng:114.02690},
+    g1:{lat:22.54430,lng:114.02710},
+    s4:{lat:22.54340,lng:114.02970},
+    g2:{lat:22.54295,lng:114.03000},
+    s5:{lat:22.54305,lng:114.02770},
+    s6:{lat:22.54282,lng:114.02680},
+    s7:{lat:22.54294,lng:114.02604},
+    w5:{lat:22.54220,lng:114.02250},
+    s8:{lat:22.54088,lng:114.01897},
+    w6:{lat:22.53750,lng:114.01820},
+    s9:{lat:22.53430,lng:114.01920},
+    end:{lat:22.53551,lng:114.02875}
+  };
+
+  var STOPS=[
+    {key:'start',no:'起',dn:'起',name:'香梅北站D口',time:'14:05',cls:'up',pin:'start'},
+    {key:'s1',no:'①',dn:'1',name:'特发天桥',time:'14:10',cls:'up',nudge:[0,-9]},
+    {key:'s2',no:'②',dn:'2',name:'侨香路花海',time:'14:25',cls:'down',nudge:[0,9]},
+    {key:'s3',no:'③',dn:'3',name:'行政学院天桥',time:'15:00',cls:'up'},
+    {key:'s4',no:'④',dn:'4',name:'交流中心',time:'15:25',cls:'down'},
+    {key:'s5',no:'⑤',dn:'5',name:'酒店花海·飞鸟',time:'15:55',cls:'up',nudge:[5,-15]},
+    {key:'s6',no:'☆',dn:'★',name:'共荣生境绿雕',time:'16:15',cls:'mid',o:true,nudge:[11,9]},
+    {key:'s7',no:'⑥',dn:'6',name:'四季花谷',time:'16:25',cls:'down',nudge:[-9,7]},
+    {key:'s8',no:'歇',dn:'歇',name:'农林站C口',time:'17:00',cls:'down',o:true},
+    {key:'s9',no:'⑦',dn:'7',name:'深南大道天桥',time:'17:15',cls:'up',nudge:[0,-7]},
+    {key:'end',no:'终',dn:'终',name:'车公庙站',time:'18:45',cls:'down',pin:'end'}
+  ];
+
+  function pathPts(keys){return keys.map(function(k){return P(COORDS[k].lat,COORDS[k].lng);});}
+
+  var greenkeys=['start','a1','s1','s2','c1','w2','s3','g1','s4','g2'];
+  var orangekeys=['g2','s5','s6','s7','w5','s8'];
+  var walk2keys=['s8','w6','s9'];
+  var metrokeys=['s9','end'];
+
+  var ovLayer=null;
+  var items=[];
+
+  function svgPin(txt,bg){
+    var s='<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="15" cy="15" r="13" fill="BG" stroke="#fff" stroke-width="3"/><text x="15" y="20" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle" font-family="PingFang SC,Helvetica">TXT</text></svg>';
+    return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s.replace('BG',bg).replace('TXT',txt));
+  }
+
+  function addDot(s){
+    var c=COORDS[s.key];
+    var el=document.createElement('div');
+    el.className='dot'+(s.o?' o':'')+(s.pin?' pin':'');
+    el.textContent=s.dn||s.no;
+    var n=s.nudge||[0,0];
+    el.style.transform='translate(-50%,-50%) translate('+n[0]+'px,'+n[1]+'px)';
+    ovLayer.appendChild(el);
+    items.push({el:el,pos:P(c.lat,c.lng)});
+  }
+
+  function buildStopLegend(){
+    var box=document.getElementById('sleg');
+    if(!box){return;}
+    var html='';
+    STOPS.forEach(function(s){
+      html+='<span><b>'+s.no+'</b> '+s.name+'<i>'+s.time+'</i></span>';
+    });
+    box.innerHTML=html;
+  }
+
+  function buildChevrons(){
+    var ARROWS=[
+      ['s1','s2','#0A7D5C'],
+      ['c1','w2','#0A7D5C'],
+      ['s3','g1','#0A7D5C'],
+      ['s5','s6','#D97706'],
+      ['s6','s7','#D97706'],
+      ['w5','s8','#D97706'],
+      ['s8','w6','#0A7D5C'],
+      ['w6','s9','#0A7D5C'],
+      ['s9','end','#64748B']
+    ];
+    ARROWS.forEach(function(a){
+      var p1=COORDS[a[0]],p2=COORDS[a[1]],color=a[2];
+      var rot=-Math.atan2((p2.lat-p1.lat)*110600,(p2.lng-p1.lng)*105030)*180/Math.PI;
+      var el=document.createElement('div');
+      el.className='chev';
+      el.style.transform='translate(-50%,-50%) rotate('+rot+'deg)';
+      el.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 8 H10 M7.5 4.5 L11.5 8 L7.5 11.5" stroke="'+color+'" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      ovLayer.appendChild(el);
+      items.push({el:el,pos:P((p1.lat+p2.lat)/2,(p1.lng+p2.lng)/2)});
+    });
+  }
+
+  function redraw(map){
+    for(var i=0;i<items.length;i++){
+      var p=map.projectToContainer(items[i].pos);
+      items[i].el.style.left=p.getX()+'px';
+      items[i].el.style.top=p.getY()+'px';
+    }
+  }
+
+  function init(){
+    var map=new TMap.Map('map',{
+      zoom:14,
+      center:P(22.5452,114.0360),
+      minZoom:12,maxZoom:17
+    });
+
+    new TMap.MultiPolyline({
+      map:map,
+      styles:{
+        main:new TMap.PolylineStyle({color:'#0A7D5C',width:6,borderWidth:2,borderColor:'#FFFFFF',lineCap:'round'}),
+        orange:new TMap.PolylineStyle({color:'#D97706',width:6,borderWidth:2,borderColor:'#FFFFFF',lineCap:'round',dashArray:[14,10]}),
+        metro:new TMap.PolylineStyle({color:'#64748B',width:5,borderWidth:2,borderColor:'#FFFFFF',lineCap:'round',dashArray:[6,8]})
+      },
+      geometries:[
+        {id:'g',styleId:'main',paths:pathPts(greenkeys)},
+        {id:'o',styleId:'orange',paths:pathPts(orangekeys)},
+        {id:'w',styleId:'main',paths:pathPts(walk2keys)},
+        {id:'m',styleId:'metro',paths:pathPts(metrokeys)}
+      ]
+    });
+
+    new TMap.MultiMarker({
+      map:map,
+      styles:{
+        start:new TMap.MarkerStyle({width:30,height:30,anchor:{x:15,y:15},src:svgPin('起','#0A7D5C')}),
+        end:new TMap.MarkerStyle({width:30,height:30,anchor:{x:15,y:15},src:svgPin('终','#C0392B')})
+      },
+      geometries:[
+        {id:'st',styleId:'start',position:P(COORDS.start.lat,COORDS.start.lng)},
+        {id:'ed',styleId:'end',position:P(COORDS.end.lat,COORDS.end.lng)}
+      ]
+    });
+
+    ovLayer=document.getElementById('ov');
+    buildStopLegend();
+    STOPS.forEach(addDot);
+    buildChevrons();
+
+    var bounds=new TMap.LatLngBounds();
+    STOPS.forEach(function(s){bounds.extend(P(COORDS[s.key].lat,COORDS[s.key].lng))});
+    function doFit(){
+      try{map.fitBounds(bounds,{padding:26});}
+      catch(e){map.fitBounds(bounds);}
+      redraw(map);
+    }
+    doFit();
+    setTimeout(doFit,350);
+    window.addEventListener('resize',function(){setTimeout(doFit,120)});
+
+    redraw(map);
+    (function loop(){ redraw(map); requestAnimationFrame(loop); })();
+  }
+
+  if(typeof TMap!=='undefined'){ init(); }
+  else{
+    var timer=setInterval(function(){
+      if(typeof TMap!=='undefined'){clearInterval(timer);init();}
+    },300);
+    setTimeout(function(){
+      if(typeof TMap==='undefined'){
+        var el=document.getElementById('map');
+        if(el){el.innerHTML='<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#888;font-size:12px;text-align:center;padding:20px">地图加载失败：请通过 WorkBuddy 预览打开本页面<br>下方列表仍完整可用</div>';}
+        clearInterval(timer);
+      }
+    },8000);
+  }
+})();
+</script>
+</body>
+</html>
